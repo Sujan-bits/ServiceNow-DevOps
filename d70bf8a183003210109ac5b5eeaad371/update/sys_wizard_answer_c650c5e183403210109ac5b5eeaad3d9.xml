@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_wizard_answer">
+    <sys_wizard_answer action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <answer>Device Request</answer>
+        <button_label/>
+        <dependent_value/>
+        <element/>
+        <name>Device Request</name>
+        <next_question/>
+        <order>100</order>
+        <payload_name/>
+        <question display_value="Task" name="Task">28309668c811221055906c7518aa2dc3</question>
+        <roles/>
+        <script/>
+        <sys_class_name>sys_wizard_answer</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-09-17 13:33:09</sys_created_on>
+        <sys_id>c650c5e183403210109ac5b5eeaad3d9</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Device Request</sys_name>
+        <sys_package display_value="Asset Management" source="x_1126772_project">d70bf8a183003210109ac5b5eeaad371</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Asset Management">d70bf8a183003210109ac5b5eeaad371</sys_scope>
+        <sys_update_name>sys_wizard_answer_c650c5e183403210109ac5b5eeaad3d9</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-09-17 13:33:09</sys_updated_on>
+        <table/>
+        <target_url>x_1126772_project_device_request.do</target_url>
+        <type>1</type>
+    </sys_wizard_answer>
+</record_update>

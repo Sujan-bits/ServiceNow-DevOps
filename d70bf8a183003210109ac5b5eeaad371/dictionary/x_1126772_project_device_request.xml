@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element db_object_id="ca50c5e183403210109ac5b5eeaad3d6" extends="task" label="Device Request" max_length="40" name="x_1126772_project_device_request" type="collection">
+        <element attributes="edge_encryption_enabled=true" label="Released on" max_length="40" name="released_on" type="glide_date_time"/>
+        <element attributes="edge_encryption_enabled=true" label="Assigned on" max_length="40" name="assigned_on" type="glide_date_time"/>
+        <element attributes="encode_utf8=false" label="Asset" max_length="32" name="asset" reference="alm_asset" type="reference"/>
+    </element>
+</database>
