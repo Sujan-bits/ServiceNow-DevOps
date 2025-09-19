@@ -9,10 +9,12 @@
 pool: mySelfHostedAP
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+- task: ServiceNow-CICD-SC-Apply@2
+  displayName: 'Apply ServiceNow Update Set'
+  inputs:
+   connectedServiceName: ServiceNow-CICD
+   appScope: x_1126772_project
+   appSysId: d70bf8a183003210109ac5b5eeaad371
+   branchName: main
+   
