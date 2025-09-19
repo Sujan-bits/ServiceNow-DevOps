@@ -3,5 +3,6 @@
         <element attributes="edge_encryption_enabled=true" label="Released on" max_length="40" name="released_on" type="glide_date_time"/>
         <element attributes="edge_encryption_enabled=true" label="Assigned on" max_length="40" name="assigned_on" type="glide_date_time"/>
         <element attributes="encode_utf8=false" label="Asset" max_length="32" name="asset" reference="alm_asset" type="reference"/>
+        <element label="Requestor" max_length="32" name="requestor" reference="sys_user" type="reference"/>
     </element>
 </database>
