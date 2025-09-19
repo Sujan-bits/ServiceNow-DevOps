@@ -8,13 +8,21 @@
 
 pool: mySelfHostedAP
 
-steps:
-
-- task: ServiceNow-CICD-SC-Apply@2
-  displayName: 'Apply ServiceNow Update Set'
-  inputs:
-   connectedServiceName: ServiceNow-CICD
-   appScope: x_1126772_project
-   appSysId: d70bf8a183003210109ac5b5eeaad371
-   branchName: main
-   
+stages:
+- stage: DeploytoPDI
+  displayName: 'Deploy to PDI'
+  jobs:
+    - deployment: DeployApp
+      displayName: 'Deploy Application'
+      environment: 'Target-instance'
+      strategy:
+       runOnce:
+         deploy:
+           steps:
+             - task: ServiceNow-CICD-SC-Apply@2
+               displayName: 'Apply ServiceNow Update Set'
+               inputs:
+                 connectedServiceName: ServiceNow-CICD
+                 appScope: x_1126772_project
+                 appSysId: d70bf8a183003210109ac5b5eeaad371
+                 branchName: main
