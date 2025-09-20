@@ -8,48 +8,21 @@
 
 pool: mySelfHostedAP
 
-variables:
-  doSkip: false
-
 stages:
-- stage: changeRequestCreate
-  displayName: "Create and monitor change request"
-  condition: and(
-    succeeded(),
-    eq(variables['doSkip'], 'false'))
-  jobs:
-    - job: createCR
-      steps:
-        - checkout: self
-        - task: PowerShell@2
-          displayName: "Create change request for approval"
-          inputs:
-            targetType: filePath
-            filePath: $(Build.SourcesDirectory)\CreateCR.ps1
-            arguments: |
-              -SNowInstance "$(SNowDestInstance)" -destUName "$(destUName)" -destPwd "$(destPwd)" -sourceDir "$(Build.SourcesDirectory)"
-        - task: PowerShell@2
-          displayName: "Monitor change request approval"
-          inputs:
-            targetType: filePath
-            filePath: $(Build.SourcesDirectory)\PS_Files\MonitorCR.ps1
-            arguments: |
-              -changeRequestSysId "$(changeRequestSysId)" -SNowInstance "$(SNowDestInstance)" -destUName "$(destUName)" -destPwd "$(destPwd)"
 - stage: DeploytoPDI
   displayName: 'Deploy to PDI'
-  dependsOn: changeRequestCreate
   jobs:
     - deployment: DeployApp
       displayName: 'Deploy Application'
       environment: 'Target-instance'
       strategy:
-        runOnce:
-          deploy:
-            steps:
-              - task: ServiceNow-CICD-SC-Apply@2
-                displayName: 'Apply ServiceNow Update Set'
-                inputs:
-                  connectedServiceName: ServiceNow-CICD
-                  appScope: x_1126772_project
-                  appSysId: d70bf8a183003210109ac5b5eeaad371
-                  branchName: main
+       runOnce:
+         deploy:
+           steps:
+             - task: ServiceNow-CICD-SC-Apply@2
+               displayName: 'Apply ServiceNow Update Set'
+               inputs:
+                 connectedServiceName: ServiceNow-CICD
+                 appScope: x_1126772_project
+                 appSysId: d70bf8a183003210109ac5b5eeaad371
+                 branchName: main
