@@ -25,7 +25,7 @@ stages:
           displayName: "Create change request for approval"
           inputs:
             targetType: filePath
-            filePath: $(Build.SourcesDirectory)\PS_Files\CreateCR.ps1
+            filePath: $(Build.SourcesDirectory)\CreateCR.ps1
             arguments: |
               -SNowInstance "$(SNowDestInstance)" -destUName "$(destUName)" -destPwd "$(destPwd)" -sourceDir "$(Build.SourcesDirectory)"
         - task: PowerShell@2
