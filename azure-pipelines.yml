@@ -35,8 +35,6 @@ stages:
                     "name": "CAB Approval"
                   },
                   "priority": "2",
-                  "risk": "Low",
-                  "impact": "3",
                   "short_description": "Change request to move stories to Production",
                   "description": "Automated Change Request created through pipeline for Production deployment",
                   "work_notes": "Hi CAB Team, Please approve this change",
