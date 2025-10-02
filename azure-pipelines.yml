@@ -8,10 +8,10 @@
 pool: mySelfHostedAP
 
 stages:
-- stage: DeploytoPDI
-  displayName: 'Deploy to PDI'
+- stage: CreateChangeRequest
+  displayName: 'Create ServiceNow CR'
   jobs:
-    # 1. Job to Create ServiceNow Change Request (Runs in a standard job to avoid validation errors)
+    # 1. Job to Create ServiceNow Change Request
     - job: CreateCRJob
       displayName: 'Create ServiceNow Change Request'
       pool: 
@@ -22,7 +22,6 @@ stages:
           name: ChangeAccelTask  # Naming the task to reference its outputs later
           inputs:
             connectedServiceName: dev251858-ServiceNow-DevOps
-            # Setting 'outputChangeRequestNumber' to true makes the CR number available as an output variable
             changeRequestDetails: |
               {
                 "attributes": {
@@ -36,37 +35,30 @@ stages:
                     "name": "CAB Approval"
                   },
                   "priority": "2",
-                  "comments": "This is a sample pipeline script to be added in your change step",
-                  "work_notes": "Update this to work_notes",
+                  "risk": "Low",
+                  "impact": "3",
+                  "short_description": "Change request to move stories to Production",
+                  "description": "Automated Change Request created through pipeline for Production deployment",
+                  "work_notes": "Hi CAB Team, Please approve this change",
                   "start_date": "2025-10-02 05:59:59",
                   "end_date": "2025-10-02 11:59:59"
                 }
               }
-
-    # 2. Deployment Job: Runs the deployment, depending on the Change Request creation job
-    - deployment: DeployApp
-      displayName: 'Deploy Application'
-      dependsOn: CreateCRJob # Ensure this deployment waits for the CR to be created
-      environment: 'Target-instance'
-      strategy:
-        runOnce:
-          deploy:
-            steps:
-              # Retrieve the Change Request Number generated in the previous job
-              - task: PowerShell@2
-                displayName: 'Set CR Variable'
-                inputs:
-                  targetType: 'inline'
-                  script: |
-                    $crNumber = "$(CreateCRJob.ChangeAccelTask.ChangeRequestNumber)"
-                    Write-Host "##vso[task.setvariable variable=CR_NUMBER;isOutput=true;]$crNumber"
-              
-              # 3. Deployment: Apply ServiceNow Update Set
-              # This task will automatically associate with the Change Request if the DevOps extension is configured correctly.
-              - task: ServiceNow-CICD-SC-Apply@2
-                displayName: 'Apply ServiceNow Update Set'
-                inputs:
-                  connectedServiceName: ServiceNow-CICD
-                  appScope: x_1126772_project
-                  appSysId: d70bf8a183003210109ac5b5eeaad371
-                  branchName: main
+- stage: DeploytoTarget
+  displayName: 'Deploy to Target'
+  dependsOn: CreateChangeRequest # Ensure this deployment waits for the CR to be created
+  jobs: 
+  - deployment: DeployApp
+    displayName: 'Deploy Application'
+    environment: 'Target-instance'
+    strategy:
+     runOnce:
+       deploy:
+         steps:
+           - task: ServiceNow-CICD-SC-Apply@2
+             displayName: 'Apply ServiceNow Update Set'
+             inputs:
+               connectedServiceName: ServiceNow-CICD
+               appScope: x_1126772_project
+               appSysId: d70bf8a183003210109ac5b5eeaad371
+               branchName: main
