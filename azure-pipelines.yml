@@ -8,10 +8,10 @@
 pool: mySelfHostedAP
 
 stages:
+# 1. This stage is to Create ServiceNow Change Request
 - stage: CreateChangeRequest
   displayName: 'Create ServiceNow CR'
   jobs:
-    # 1. Job to Create ServiceNow Change Request
     - job: CreateCRJob
       displayName: 'Create ServiceNow Change Request'
       pool: 
@@ -29,7 +29,7 @@ stages:
                     "name": "DevOps Simplified"
                   },
                   "requested_by": {
-                    "name": "System Administrator"
+                    "name": "DevOps Integration User"
                   },
                   "assignment_group": {
                     "name": "CAB Approval"
@@ -38,10 +38,10 @@ stages:
                   "short_description": "Change request to move stories to Production",
                   "description": "Automated Change Request created through pipeline for Production deployment",
                   "work_notes": "Hi CAB Team, Please approve this change",
-                  "start_date": "2025-10-02 05:59:59",
-                  "end_date": "2025-10-02 11:59:59"
                 }
               }
+
+# 2. This stage is to deploy the application
 - stage: DeploytoTarget
   displayName: 'Deploy to Target'
   dependsOn: CreateChangeRequest # Ensure this deployment waits for the CR to be created
