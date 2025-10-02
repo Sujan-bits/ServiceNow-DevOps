@@ -12,8 +12,27 @@ stages:
 - stage: CreateChangeRequest
   displayName: 'Create ServiceNow CR'
   jobs:
+    - job: SetDynamicDates
+      displayName: 'Calculate CR Start/End Dates'
+      pool:
+       name: mySelfHostedAP
+      steps:
+        - task: PowerShell@2
+          name: DateSetter
+          displayName: 'Set Dynamic CR Dates'
+          inputs:
+            targetType: inline
+            script: |
+              $currentDate = (Get-Date).ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")
+              $endDate = (Get-Date).ToUniversalTime().AddHours(6).ToString("yyyy-MM-dd HH:mm:ss")
+              Write-Host "##vso[task.setvariable variable=CR_START_DATE;isOutput=true]$currentDate"
+              Write-Host "##vso[task.setvariable variable=CR_END_DATE;isOutput=true]$endDate"
     - job: CreateCRJob
       displayName: 'Create ServiceNow Change Request'
+      dependsOn: SetDynamicDates
+      variables:
+        CR_START_DATE: $[dependencies.SetDynamicDates.outputs['DateSetter.CR_START_DATE']]
+        CR_END_DATE: $[dependencies.SetDynamicDates.outputs['DateSetter.CR_END_DATE']]
       pool: 
        name: server
       steps:
@@ -38,8 +57,8 @@ stages:
                   "short_description": "Change request to move stories to Production",
                   "description": "Automated Change Request created through pipeline for Production deployment",
                   "work_notes": "Hi CAB Team, Please approve this change",
-                  "start_date": "2025-10-02 05:59:59",
-                  "end_date": "2025-10-02 11:59:59"
+                  "start_date": "$(CR_START_DATE)",
+                  "end_date": "$(CR_END_DATE)"
                 }
               }
 
