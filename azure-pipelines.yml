@@ -26,6 +26,9 @@ stages:
             changeRequestDetails: |
               {
                 "attributes": {
+                  "chg_model": {
+                    "name": "DevOps Simplified"
+                  },
                   "requested_by": {
                     "name": "System Administrator"
                   },
