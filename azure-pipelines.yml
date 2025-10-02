@@ -8,21 +8,23 @@
 
 pool: mySelfHostedAP
 
-stages:
-- stage: DeploytoPDI
-  displayName: 'Deploy to PDI'
-  jobs:
-    - deployment: DeployApp
-      displayName: 'Deploy Application'
-      environment: 'Target-instance'
-      strategy:
-       runOnce:
-         deploy:
-           steps:
-             - task: ServiceNow-CICD-SC-Apply@2
-               displayName: 'Apply ServiceNow Update Set'
-               inputs:
-                 connectedServiceName: ServiceNow-CICD
-                 appScope: x_1126772_project
-                 appSysId: d70bf8a183003210109ac5b5eeaad371
-                 branchName: main
+steps:
+  - task: ServiceNow-DevOps-Server-Change-Acceleration@1
+    inputs:
+     connectedServiceName: dev251858-ServiceNow-DevOps
+     changeRequestDetails: |
+      {
+        "attributes": {
+          "requested_by": {
+            "name": "System Administrator"
+          },
+          "assignment_group": {
+            "name": "CAB Approval"
+          },
+          "priority": "2",
+          "comments": "This is a sample pipeline script to be added in your change step",
+          "work_notes": "Update this to work_notes",
+          "start_date": "2023-09-07 11:59:59",
+          "end_date": "2023-09-09 11:59:59"
+        }
+      }
