@@ -38,6 +38,8 @@ stages:
                   "short_description": "Change request to move stories to Production",
                   "description": "Automated Change Request created through pipeline for Production deployment",
                   "work_notes": "Hi CAB Team, Please approve this change",
+                  "start_date": "2025-10-02 05:59:59",
+                  "end_date": "2025-10-02 11:59:59"
                 }
               }
 
