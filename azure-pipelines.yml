@@ -24,7 +24,7 @@ stages:
             targetType: inline
             script: |
               $currentDate = (Get-Date).ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")
-              $endDate = (Get-Date).ToUniversalTime().AddHours(6).ToString("yyyy-MM-dd HH:mm:ss")
+              $endDate = (Get-Date).ToUniversalTime().AddHours(2).ToString("yyyy-MM-dd HH:mm:ss")
               Write-Host "##vso[task.setvariable variable=CR_START_DATE;isOutput=true]$currentDate"
               Write-Host "##vso[task.setvariable variable=CR_END_DATE;isOutput=true]$endDate"
     - job: CreateCRJob
@@ -75,7 +75,7 @@ stages:
        deploy:
          steps:
            - task: ServiceNow-CICD-SC-Apply@2
-             displayName: 'Apply ServiceNow Update Set'
+             displayName: 'Apply changes on target instance'
              inputs:
                connectedServiceName: ServiceNow-CICD
                appScope: x_1126772_project
